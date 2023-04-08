@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react'
 const Home = () => {
 
     // URL
-    const URL = 'http://157.245.106.96:8080/notes/'
+    const URL = 'http://localhost:8080/notes/'
 
     // to store title
     const title = useRef('')
