@@ -1,5 +1,5 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -7,34 +7,52 @@
 
 button {
   margin: 2rem;
+  background: grey !important;
 }
 
-h6 {
+h6, h5, h2 {
   color: #000;
+  /* font-weight: bolder; */
 }
 
 p {
   color: #000;
 }
 
+.no-notes-div h4 {
+  color: white;
+}
+
 .container {
   display: flex;
   gap: 2rem;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  margin: 5rem;
 }
 
 .container-child {
   height: fit-content;
   width: 20rem;
   background-color: white;
+  border-radius: 1rem;
 }
 
 .description {
   min-height: 10rem;
+  padding: 0 1rem;
+}
+
+.date-created {
+  padding: 0 1rem;
 }
 
 .date-created>h6,p {
   display: inline;
+}
+
+label {
+  margin: 0 1rem;
 }
 
 .logo {

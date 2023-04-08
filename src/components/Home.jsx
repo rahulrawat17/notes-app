@@ -1,6 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react'
 
 const Home = () => {
+
+    // URL
+    const URL = 'http://157.245.106.96:8080/notes/'
+
     // to store title
     const title = useRef('')
     // to store description
@@ -10,16 +14,21 @@ const Home = () => {
 
     // to fetch all notes from server
     useEffect(() => {
-        fetch('http://localhost:8080/notes')
+        fetch(URL)
             .then(response => response.json())
             .then(data => setNotes(data));
     }, [])
 
+    // to format the datetime
+    function formatDateTime(date) {
+        let new_date = new Date(Date.parse(date));
+        return new_date.toUTCString()
+    }
+
     // to add new notes
     function addNotes() {
-        const url = 'http://localhost:8080/notes'
         let temp_obj = { title: title.current.value, detail: description.current.value }
-        fetch(url, {
+        fetch(URL, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -29,16 +38,13 @@ const Home = () => {
             .then(response => response.json())
             .then(data => {
                 let temp_obj2 = { ...temp_obj, id: data.id, created_date: data.created_date }
-                console.log("temp_obj2", temp_obj2);
                 setNotes([...notes, temp_obj2])
             })
     }
 
     // to delete a note
     function deleteBtn(e, id) {
-        console.log("id: ", id);
-        const url = 'http://localhost:8080/notes/' + id
-        fetch(url, {
+        fetch(URL + id, {
             method: 'delete'
         },)
             .then(response => {
@@ -59,19 +65,24 @@ const Home = () => {
                 <input ref={description} type="text" />
                 <button onClick={() => addNotes()}>Add</button>
             </div>
-            <div className='container'>
-                {console.log("notes", notes)}
-                {notes.map((item, i) => {
-                    return (
-                        <div className='container-child'>
-                            <div className='title'><h6>{item.title}</h6></div>
-                            <div className='description'><p>{item.detail}</p></div>
-                            <div className='date-created'><h6>Date Created: </h6><p>{item.created_date}</p></div>
-                            <div className='delete-btn'><button onClick={(e) => deleteBtn(e, item.id)}>delete</button></div>
-                        </div>
-                    )
-                })}
-            </div>
+            {notes.length > 0 ?
+                <div className='container'>
+                    {notes.map((item, i) => {
+                        return (
+                            <div className='container-child'>
+                                <div className='title'><h2>{item.title}</h2></div>
+                                <div className='description'><p>{item.detail}</p></div>
+                                <div className='date-created'><h5>Date Created: </h5><p>{formatDateTime(item.created_date)}</p></div>
+                                <div className='delete-btn'><button onClick={(e) => deleteBtn(e, item.id)}>delete</button></div>
+                            </div>
+                        )
+                    })}
+                </div>
+                :
+                <div className='no-notes-div'>
+                    <h4>No Notes to display</h4>
+                </div>
+            }
         </div>
     )
 }
